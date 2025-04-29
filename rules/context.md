@@ -28,7 +28,11 @@ This project contains multiple git repositories.  The following is a list of rep
 | globeco-trade-blotter | Trade Blotter | Java | Keeps track of trades being worked by the trading desks. |
 | kasbench-user | User | Java | Ignore this repo.  It is for testing and training purposes only. |
 
+
+
 * In the root of each repository, there should be a cursor markdown file called log.mdc.  If it doesn't exist, create it.
+* Log every action you take in the cursor-logs.mdc file in the repository in which you make a change.  If you change multiple repositories, log it in the cursor-logs.mdc file in each repository.
+
 
 
 
