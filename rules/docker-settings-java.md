@@ -1,0 +1,1 @@
+If instructed to create a Dockerfile, use amazoncorretto:23-alpine as the base image.
