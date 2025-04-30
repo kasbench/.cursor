@@ -20,18 +20,17 @@ The following context applies to all microservices regardless of programming lan
 * Include logging following industry best practices.
 * Follow best practices for REST APIs.
 
-This project contains multiple git repositories.  The following is a list of repositories and their purposes.  All subdirectories are relative to the root of this project.  Each subdirectory listed below is git repository. This list will grow over time.
+This Workspace contains multiple projects.  Each is a separate git repository.  The following is a list of repositories and their purposes.  
 
-
-| Subdirectory | Name of Microservice | Language | Purpose |
+| Project | Name of Microservice | Language | Purpose |
 | ---------- | ---------- | ----------- | ----------- |
-| globeco-trade-blotter | Trade Blotter | Java | Keeps track of trades being worked by the trading desks. |
-| kasbench-user | User | Java | Ignore this repo.  It is for testing and training purposes only. |
+| globeco-trade-blotter | Blotter | Java | Keeps track of trades being worked by the trading desks. |
 
 
 
-* In the root of each repository, there should be a cursor markdown file called log.mdc.  If it doesn't exist, create it.
-* Log every action you take in the cursor-logs.mdc file in the repository in which you make a change.  If you change multiple repositories, log it in the cursor-logs.mdc file in each repository.
+
+* In the root of each project, there should be a cursor markdown file called log.mdc.  If it doesn't exist, create it.
+* Log every action you take in the cursor-logs.mdc file in the project in which you make a change.  If you change multiple projects, log it in the cursor-logs.mdc file in each projects.
 
 
 
