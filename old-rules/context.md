@@ -19,18 +19,11 @@ The following context applies to all microservices regardless of programming lan
 * Assure interoperability between components that are meant to work together.
 * Include logging following industry best practices.
 * Follow best practices for REST APIs.
-
-This Workspace contains multiple projects.  Each is a separate git repository.  The following is a list of repositories and their purposes.  
-
-| Project | Name of Microservice | Language | Purpose |
-| ---------- | ---------- | ----------- | ----------- |
-| globeco-trade-blotter | Blotter | Java | Keeps track of trades being worked by the trading desks. |
+* All database tables have a `version` column defined as an integer.  Version columns are used for optimistic concurrency.  When generating ORM entities, identify these columns so that optimistic concurrency control is applied. 
 
 
-
-
-* In the root of each project, there should be a cursor markdown file called log.mdc.  If it doesn't exist, create it.
-* Log every action you take in the cursor-logs.mdc file in the project in which you make a change.  If you change multiple projects, log it in the cursor-logs.mdc file in each projects.
+* In the root of this project, there should be a markdown file called cursor-log.md.  If it doesn't exist, create it.
+* In the root of this project, there should be a markdown file called cursor-prompts.md.  If it doesn't exist, create it.
 
 
 
