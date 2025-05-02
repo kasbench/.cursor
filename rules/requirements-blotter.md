@@ -383,6 +383,40 @@ Use standard HTTP/REST return codes.
 There is no Flyway migration for Order.
 
 
+### Block
+
+An block is a group of orders for the same security and order type placed around the same time.
+
+The name of the resource is `block`.  The data is in table `block`.
+
+ Securities have the following fields:
+
+| Database Name | API Name | API Datatype |  Description | Constraints |
+| --- | --- | --- | --- | --- |
+| id | blockId | Integer | Immutable resource identifier. | Required |
+| security_id | securityId | Integer | The identifier of the security to trade.  |Foreign key to security.  Required.|
+| order_type_id | orderTypeId | Integer | The order type of the block. | Foreign key to order_type.  Required. |
+| version | versionId | Integer | Version field for concurrency management. | Required | 
+
+
+
+Supports the following operations
+
+| Resource | Verbs | Description |
+| --- | --- | --- |
+| /block/ | GET | Retrieves all blocks.  Include all fields above.  | 
+| /block/ | POST | Add a new block.  Payload includes all fields above. |
+| /block/{blockId} | GET | Retrieves the specified blockId.  Include all fields above.|
+| /block/{blockId} | PUT, PATCH | Updates the specified blockId.  Payload includes the blockId and all fields required for a PUT or PATCH. 
+| /block/{blockId} | DELETE | Deletes the blockId.  versionId must be passed as a query parameter.   |
+
+Use standard HTTP/REST return codes.
+
+There is no Flyway migration for Block.
+
+
+
+
 
 ## Technical Requirements
 
