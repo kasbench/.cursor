@@ -1,5 +1,13 @@
 # Requirements for the Blotter Microservice
 
+## Context Diagram
+
+<img src="../images/globeco_pm_and_trading.png">
+
+## Data Model
+
+<img src="../images/datamodel.png">
+
 ## General Requirements
 
 We are developing a suite of applications called the GlobeCo Suite.  The GlobeCo Suite is being built as part of a Kubernetes Autoscaling Benchmark called KASBench.  The suite consists primarily of microservices written in Java, Go, and 
@@ -131,6 +139,248 @@ Use standard HTTP/REST return codes.
 | 4 | Crypto | 1::bit | 
 
 
+### Trade Type
+
+A trade type is a categorization for the way a trade may be placed with the sell side.  Values include buy, sell, sell to open, buy to close, etc. 
+
+
+The name of the resource is `tradeType`.  The data is in table `trade_type`.
+
+ Botters have the following fields:
+
+| Database Name | API Name | API Datatype |  Description | Constraints |
+| --- | --- | --- | --- | --- |
+| id | tradeTypeId | Integer | Immutable resource identifier. | Required |
+| abbreviation | abbreviation | String | Abbreviation for the trade type. | Required.  The maximum length is 10 characters. |
+| description | description | String | Long description of the trade type for display.| Required.  The maximum length is 100 characters. |
+| version | versionId | Integer | Version field for concurrency management. | Required |
+
+Supports the following operations
+
+| Resource | Verbs | Description |
+| --- | --- | --- |
+| /tradeType/ | GET | Retrieves all trade types.  Include all fields above.  | 
+| /tradeType/ | POST | Add a new trade type.  Payload includes all fields above. |
+| /tradeType/{tradeTypeId} | GET | Retrieves the specified tradeTypeId.  Include all fields above.|
+| /tradeType/{tradeTypeId} | PUT, PATCH | Updates the specified tradeTypeId.  Payload includes the tradeTypeId and all fields required for a PUT or PATCH |
+| /tradeType/{tradeTypeId} | DELETE | Deletes the tradeTypeId.  versionId must be passed as a query parameter |
+
+Use standard HTTP/REST return codes.
+
+#### Sample Data for Trade Type
+
+
+| id | abbreviation | description | version |
+| --- | --- | --- | --- |
+| 1 | buy | buy | 1 |
+| 2 | sell | sell | 1 |
+| 3 | open | sell to open | 1 |
+| 4 | close | buy to close | 1 |
+| 5 | exercise | excercise option | 1 |
+| 6 | sub | subscribe | 1 |
+| 7 | red | redeem | 1 |
+
+
+
+### Destination
+
+A destination is an exchange or other executing entity.  It is where trades are sent.
+
+The name of the resource is `destination`.  The data is in table `destination`.
+
+ Botters have the following fields:
+
+| Database Name | API Name | API Datatype |  Description | Constraints |
+| --- | --- | --- | --- | --- |
+| id | destinationId | Integer | Immutable resource identifier. | Required |
+| abbreviation | abbreviation | String | Abbreviation for the destination. | Required.  The maximum length is 20 characters. |
+| description | description | String | Long description of the destination for display.| Required.  The maximum length is 100 characters. |
+| version | versionId | Integer | Version field for concurrency management. | Required |
+
+Supports the following operations
+
+| Resource | Verbs | Description |
+| --- | --- | --- |
+| /destination/ | GET | Retrieves all destinations.  Include all fields above.  | 
+| /destination/ | POST | Add a new destination.  Payload includes all fields above. |
+| /destination/{destinationId} | GET | Retrieves the specified destinationId.  Include all fields above.|
+| /destination/{destinationId} | PUT, PATCH | Updates the specified destinationId.  Payload includes the destinationId and all fields required for a PUT or PATCH |
+| /destination/{destinationId} | DELETE | Deletes the destinationId.  versionId must be passed as a query parameter |
+
+Use standard HTTP/REST return codes.
+
+#### Sample Data for Trade Type
+
+
+| id | abbreviation | description | version |
+| --- | --- | --- | --- |
+| 1 | NYSE | New York Stock Exchange | 1 |
+| 2 | NASDAQ | NASDAQ | 1 |
+| 3 | BATS | BATS | 1 |
+| 4 | TSE | Toronto Stock Exchange | 1 |
+| 5 | INST | Instinet | 1 |
+
+
+### Order Type
+
+An order type is a categorization for the way an order may be placed with the buy-side trading desk.  Values include buy, sell, sell to open, buy to close, etc. 
+
+The name of the resource is `orderType`.  The data is in table `order_type`.
+
+ Botters have the following fields:
+
+| Database Name | API Name | API Datatype |  Description | Constraints |
+| --- | --- | --- | --- | --- |
+| id | orderTypeId | Integer | Immutable resource identifier. | Required |
+| abbreviation | abbreviation | String | Abbreviation for the order type. | Required.  The maximum length is 10 characters. |
+| description | description | String | Long description of the order type for display.| Required.  The maximum length is 60 characters. |
+| version | versionId | Integer | Version field for concurrency management. | Required |
+
+Supports the following operations
+
+| Resource | Verbs | Description |
+| --- | --- | --- |
+| /orderType/ | GET | Retrieves all order type.  Include all fields above.  | 
+| /orderType/ | POST | Add a new order type.  Payload includes all fields above. |
+| /orderType/{orderTypeId} | GET | Retrieves the specified orderTypeId.  Include all fields above.|
+| /orderType/{orderTypeId} | PUT, PATCH | Updates the specified orderTypeId.  Payload includes the orderTypeId and all fields required for a PUT or PATCH |
+| /orderType/{orderTypeId} | DELETE | Deletes the orderTypeId.  versionId must be passed as a query parameter |
+
+Use standard HTTP/REST return codes.
+
+#### Sample Data for Trade Type
+
+
+| id | abbreviation | description | version |
+| --- | --- | --- | --- |
+| 1 | buy | buy | 1 |
+| 2 | sell | sell | 1 |
+| 3 | open | sell to open | 1 |
+| 4 | close | buy to close | 1 |
+| 5 | exercise | excercise option | 1 |
+| 6 | sub | subscribe | 1 |
+| 7 | red | redeem | 1 |
+
+### Order Status
+
+An order status defines the current state of an order.
+
+The name of the resource is `orderStatus`.  The data is in table `order_status`.
+
+ Botters have the following fields:
+
+| Database Name | API Name | API Datatype |  Description | Constraints |
+| --- | --- | --- | --- | --- |
+| id | orderStatusId | Integer | Immutable resource identifier. | Required |
+| abbreviation | abbreviation | String | Abbreviation for the order status. | Required.  The maximum length is 20 characters. |
+| description | description | String | Long description of the order status for display.| Required.  The maximum length is 60 characters. |
+| version | versionId | Integer | Version field for concurrency management. | Required |
+
+Supports the following operations
+
+| Resource | Verbs | Description |
+| --- | --- | --- |
+| /orderStatus/ | GET | Retrieves all order statuses.  Include all fields above.  | 
+| /orderStatus/ | POST | Add a new order status.  Payload includes all fields above. |
+| /orderStatus/{orderStatusId} | GET | Retrieves the specified orderStatusId.  Include all fields above.|
+| /orderStatus/{orderStatusId} | PUT, PATCH | Updates the specified orderStatusId.  Payload includes the orderStatusId and all fields required for a PUT or PATCH |
+| /orderStatus/{orderStatusId} | DELETE | Deletes the orderStatusId.  versionId must be passed as a query parameter |
+
+Use standard HTTP/REST return codes.
+
+#### Sample Data for Trade Type
+
+
+| id | abbreviation | description | version |
+| --- | --- | --- | --- |
+| 1 | new | Newly created order | 1 |
+| 2 | open | Order is pending | 1 |
+| 3 | block | Order has been blocked | 1 |
+| 4 | sent | Order has been sent | 1 |
+| 5 | filled | Order has been filled | 1 |
+| 6 | cancel | Order has been cancelled | 1 |
+
+
+### Security
+
+A security represents an interest in equity, debt, or other rights.
+
+The name of the resource is `security`.  The data is in table `security`.
+
+ Securities have the following fields:
+
+| Database Name | API Name | API Datatype |  Description | Constraints |
+| --- | --- | --- | --- | --- |
+| id | securityId | Integer | Immutable resource identifier. | Required |
+| ticker | ticker | String | Trading abbreviation for security. The maximum length is 50 characters.|
+| description | description |String | Description of the security.  The maximum length is 200 characters. |
+| security_type_id | securityTypeId |  Integer | The security type of the security.
+| version | versionId | Integer | Version field for concurrency management. | Required |
+
+Supports the following operations
+
+| Resource | Verbs | Description |
+| --- | --- | --- |
+| /orderStatus/ | GET | Retrieves all order statuses.  Include all fields above.  | 
+| /orderStatus/ | POST | Add a new order status.  Payload includes all fields above. |
+| /orderStatus/{orderStatusId} | GET | Retrieves the specified orderStatusId.  Include all fields above.|
+| /orderStatus/{orderStatusId} | PUT, PATCH | Updates the specified orderStatusId.  Payload includes the orderStatusId and all fields required for a PUT or PATCH |
+| /orderStatus/{orderStatusId} | DELETE | Deletes the orderStatusId.  versionId must be passed as a query parameter |
+
+Use standard HTTP/REST return codes.
+
+#### Sample Data for Security
+
+
+| id | ticker | description | security_type_id | version |
+| --- | --- | --- | --- | --- |
+| 1 | IBM | IBM | 1 | 1 |
+| 2 | INTC | Intel | 1 | 1 |
+| 3 | VTI | Vanguard Total Stock Market Index | 12 | 1 |
+| 4 | CAD | Canadian Dollar | 13 | 1 |
+| 5 | BTC | Bitcoin  | 10 | 1 |
+| 6 | GM250502C00030000 | GM Call Option May 2025 30.000 | 8 | 1
+
+
+### Order
+
+An order is an trading instruction sent from a portfolio manager to a trader.
+
+The name of the resource is `order`.  The data is in table `order`.
+
+ Securities have the following fields:
+
+| Database Name | API Name | API Datatype |  Description | Constraints |
+| --- | --- | --- | --- | --- |
+| id | orderId | Integer | Immutable resource identifier. | Required |
+| security_id | securityId | Integer | The identifier of the security to trade.  |Foreign key to security.  Required.|
+| blotter_id | blotterID | Integer |The blotter on which this security will land.  |Foreign key to blotter.  See __Rule for blotter assignment__ below.
+| quantity | quantity | Numeric | The quantity of the order | Must be greater than 0.  The maximum size is 9999999999.99999999.  |
+| order_timestamp | orderTimestamp | String| The time the order is placed with time zone | This field should not be part of the POST, PUT, or PATCH payload.  It should be automatically populated with the database time.  On a GET, the field should be formatted as in ISO 8601 format like this example: 2025-05-01T10:30:00.000-04:00.  Users should not be able to modify this field directly. | 
+| order_type_id | orderTypeId | Integer | The type of the order | Foreign key to orderType.  Required |
+| order_status_id | orderStatusId | Integer | The status of the order | Default to 1 if not supplied. |
+| version | versionId | Integer | Version field for concurrency management. | Required | 
+
+__Rule for blotter assignment__
+- Look at the blotter table to see if there is a record with the security_type_id equal to the securityTypeId specified in the API Post.  If the record exists and the field autoPopulate is 1, then the blotterId of the order is the id of the matching blotter record.  If there is no match, populate the blotterId as NULL. This rule only applies to a POST.  For a PUT, use whatever the caller specified.  
+
+
+
+Supports the following operations
+
+| Resource | Verbs | Description |
+| --- | --- | --- |
+| /order/ | GET | Retrieves all orders.  Include all fields above.  | 
+| /order/ | POST | Add a new order.  Payload includes all fields above with the exception of orderTimestamp. |
+| /order/{orderId} | GET | Retrieves the specified orderId.  Include all fields above.|
+| /order/{orderId} | PUT, PATCH | Updates the specified orderStatusId.  Payload includes the orderStatusId and all fields required for a PUT or PATCH.  It does not include orderTimestamp |
+| /order/{orderId} | DELETE | Deletes the orderStatusId.  versionId must be passed as a query parameter.  Only permit deletes if orderStatusId is 1. |
+| /order/{orderId}/blotter/{blotterId} | POST or PUT | Updates the blotterId to the blotterId specified.  VersionId must be passed as a query parameter and used for optimistic concurrency.|
+| /order/{orderId}/status/{orderStatusId}| POST or PUT | Updates the orderStatusId to the orderStatusId specified. VersionId must be passed as a query parameter and used for optimistic concurrency.|
+
+Use standard HTTP/REST return codes.
+
+There is no Flyway migration for Order.
 
 
 
