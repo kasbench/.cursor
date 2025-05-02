@@ -348,7 +348,7 @@ An order is an trading instruction sent from a portfolio manager to a trader.
 
 The name of the resource is `order`.  The data is in table `order`.
 
- Securities have the following fields:
+ Orders have the following fields:
 
 | Database Name | API Name | API Datatype |  Description | Constraints |
 | --- | --- | --- | --- | --- |
@@ -385,11 +385,11 @@ There is no Flyway migration for Order.
 
 ### Block
 
-An block is a group of orders for the same security and order type placed around the same time.
+A block is a group of orders for the same security and order type placed around the same time.
 
 The name of the resource is `block`.  The data is in table `block`.
 
- Securities have the following fields:
+ Blocks have the following fields:
 
 | Database Name | API Name | API Datatype |  Description | Constraints |
 | --- | --- | --- | --- | --- |
@@ -415,6 +415,85 @@ Use standard HTTP/REST return codes.
 There is no Flyway migration for Block.
 
 
+### Block Allocation
+
+A block allocation is used to include orders in a block.
+
+The name of the resource is `blockAllocation`.  The data is in table `block_allocation`.
+
+ Block allocations have the following fields:
+
+| Database Name | API Name | API Datatype |  Description | Constraints |
+| --- | --- | --- | --- | --- |
+| id | blockAllocationId | Integer | Immutable resource identifier. | Required |
+| order_id | orderId | Integer | The identifier of the order including in the block.  |Foreign key to order.  Required.|
+| block_id | blockId | Integer | The block that is being allocations. | Foreign key to block.  Required. |
+| quantity | quantity | Numeric | The quantity that is being allocated. | Must be greater than zero.  The maximum size is 9999999999.99999999. Required.|
+| filled_quantity | filledQuantity | Numeric | The quantity that has been filled. | Must be greater than or equal to zero.  The maximum size is 9999999999.99999999. Filled quantity must be less than or equal to quantity. Required. |
+| version | versionId | Integer | Version field for concurrency management. | Required | 
+
+
+
+Supports the following operations
+
+| Resource | Verbs | Description |
+| --- | --- | --- |
+| /blockAllocation/ | GET | Retrieves all block allocations.  Include all fields above.  | 
+| /blockAllocation/block/{blockId} | GET | Returns all block allocations for the specified blockId |
+|/blockAllocation/order/{orderId} | GET | Returns all block allocations for the specified orderId
+| /blockAllocation/{blockAllocationId} | GET | Retrieves the specified blockAllocationId.  Include all fields above.|
+| /blockAllocation/ | POST | Add a new block allocation.  Payload includes all fields above. |
+| /blockAllocation/{blockAllocationId} | PUT, PATCH | Updates the specified blockId.  Payload includes the blockAllocationId and all fields required for a PUT or PATCH. 
+| /blockAllocationId/{blockAllocationId}/fill/{quantityFilled}| POST, PUT | Adds the {quantityFilled} to the current value of quantityFilled of the specified block allocation. versionId must be passed as a query parameter. 
+| /blockAllocation/{blockAllocationId} | DELETE | Deletes the blockAllocationId.  versionId must be passed as a query parameter.   |
+
+Use standard HTTP/REST return codes.
+
+There is no Flyway migration for BlockAllocation.
+
+
+### Trade
+
+A trade is a transaction placed with a destination for the acquisition, disposition, or exercise of a security.
+
+The name of the resource is `trade`.  The data is in table `trade`.
+
+ Trades have the following fields:
+
+| Database Name | API Name | API Datatype |  Description | Constraints |
+| --- | --- | --- | --- | --- |
+| id | tradeId | Integer | Immutable resource identifier. | Required |
+| block_id | blockId | Integer | The block that is being traded. | Foreign key to block.  Required. |
+| quantity | quantity | Numeric | The quantity that is being traded. | Must be greater than zero.  The maximum size is 9999999999.99999999. Required.|
+| trade_type_id | tradeTypeId | Integer | The type of trade. | Foreign key to tradeType.  Required.
+| filled_quantity | filledQuantity | Numeric | The quantity that has been filled. | Must be greater than or equal to zero.  The maximum size is 9999999999.99999999. Filled quantity must be less than or equal to quantity. Required. |
+| version | versionId | Integer | Version field for concurrency management. | Required | 
+
+
+
+Supports the following operations
+
+| Resource | Verbs | Description |
+| --- | --- | --- |
+| /trade/ | GET | Retrieves all block allocations.  Include all fields above.  | 
+| /trade/{tradeId} | GET | Returns the specified tradeId |
+| /trade/block/{blockId} | GET | Returns all trades for the specified blockId |
+| /trade/ | POST | Add a new trade.  Payload includes all fields above. |
+| /trade/{tradeId} | PUT, PATCH | Updates the specified tradeId.  Payload includes the tradeId and all fields required for a PUT or PATCH. 
+| /trade/{tradeId}/fill/{quantityFilled}| POST, PUT | Adds the {quantityFilled} to the current value of quantityFilled of the specified tradeId. versionId must be passed as a query parameter. 
+| /trade/{tradeId} | DELETE | Deletes the tradeId.  versionId must be passed as a query parameter.   |
+
+Use standard HTTP/REST return codes.
+
+There is no Flyway migration for Trade.
+
+
+### Missing APIs
+
+| Resource | Verbs | Description |
+| --- | --- | --- |
+| /block/createBlock | POST | Create a new block and one or more block allocations.  Caller passes a list of list of orderId.  All of the supplied orders must be for the same securityId and orderTypeId.  If not, return an error.  If te request passes validation, create a block using the supplied securityId and orderTypeId and create blockAllocations for each of the orders.  The blockAllocation blockId is the block just created.  The orderId is the orderId of the order.  The quantity is the quanity from the order.  Filled quantity is zero. |
+| /trade/allocateProRata | POST |  Perform a pro rata allocation of trade.filledQuantity to the blockAllocation records of the block referenced by trade.blockId.  The sum of the allocated filledQuantity must exactly equal trade.filledQuantity.  If they are off due to rounding, adjust one of the allocations at random to make the sum of allocated filledQuantity exactly equal trade.filledQuantity.  versionId must be passed as a query parameter. 
 
 
 
